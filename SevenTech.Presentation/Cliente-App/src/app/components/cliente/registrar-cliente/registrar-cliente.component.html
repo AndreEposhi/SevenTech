@@ -1,0 +1,128 @@
+<form [formGroup]="dadosCliente">
+  <tabset>
+    <tab heading="Cliente">
+      <div class="form-row" hidden >
+        <div class="form-group col-md-6">
+          <input type="hidden" class="form-control" formControlName="id">
+        </div>
+      </div>
+      <div class="form-row">
+        <div class="form-group col-md-6">
+          <label>Nome</label>
+          <input type="text" class="form-control"
+          [ngClass]="{'is-invalid': dadosCliente.get('nome').errors &&
+                                    dadosCliente.get('nome').touched}"
+          formControlName="nome" placeholder="Informe o nome">
+          <div *ngIf="dadosCliente.get('nome').hasError('required') &&
+                      dadosCliente.get('nome').touched"
+                      class="invalid-feedback">
+            Nome é obrigatório.
+          </div>
+        </div>
+      </div>
+      <div class="form-row">
+        <div class="form-group col-md-6">
+          <label>Data de Nascimento</label>
+          <input type="text" class="form-control"
+          bsDatepicker
+          value="{{cliente.dataNascimento | datetimeformat }}"
+          [(ngModel)]="cliente.dataNascimento"
+          [bsConfig]="{dateInputFormat: 'DD/MM/YYYY', showTodayButton: true}"
+          [ngClass]="{'is-invalid': dadosCliente.get('dataNascimento').errors &&
+                                    dadosCliente.get('dataNascimento').touched}"
+          formControlName="dataNascimento" placeholder="Informe a data de nascimento">
+          <div *ngIf="dadosCliente.get('dataNascimento').hasError('required') &&
+                      dadosCliente.get('dataNascimento').touched"
+                      class="invalid-feedback">
+            Data de nascimento é obrigatória.
+          </div>
+        </div>
+      </div>
+      <div class="form-row">
+        <div class="form-group col-md-6">
+          <label>Sexo</label>
+          <select class="form-control"
+          [ngClass]="{'is-invalid': dadosCliente.get('sexo').errors && dadosCliente.get('sexo').touched}"
+          formControlName="sexo">
+            <option value="0">Feminino</option>
+            <option value="1">Masculino</option>
+          </select>
+          <div *ngIf="dadosCliente.get('sexo').hasError('required') &&
+                      dadosCliente.get('sexo').touched"
+                      class="invalid-feedback">
+            Sexo é obrigatório.
+          </div>
+        </div>
+      </div>
+    </tab>
+    <tab heading="Endereço">
+      <div>
+        <div>
+          <fieldset formGroupName="endereco" class="form-group">
+            <div class="row">
+              <div class="form-row" hidden >
+                <div class="form-group col-md-6">
+                  <input type="hidden" class="form-control" formControlName="id">
+                </div>
+              </div>
+              <div class="form-row" hidden >
+                <div class="form-group col-md-6">
+                  <input type="hidden" class="form-control" formControlName="clienteId">
+                </div>
+              </div>
+              <div class="form-group col-md-6">
+                <label>Cep</label>
+                <input type="text" class="form-control"
+                [ngClass]="{'is-invalid': dadosCliente.get('endereco.cep').errors && dadosCliente.get('endereco.cep').touched}"
+                formControlName="cep" placeholder="Informe o cep"
+                [(ngModel)]="endereco.cep" (blur)="obterEndereco($event)" mask="00.000-000"/>
+                <div *ngIf="dadosCliente.get('endereco.cep').hasError('required') &&
+                      dadosCliente.get('endereco.cep').touched"
+                      class="invalid-feedback">
+                  Cep é obrigatório.
+                </div>
+              </div>
+              <div class="form-group col-md-6">
+                <label>Logradouro</label>
+                <input type="text" class="form-control" formControlName="logradouro" readonly="true"/>
+              </div>
+              <div class="form-group col-md-6">
+                <label>Número</label>
+                <input type="text" class="form-control"
+                [ngClass]="{'is-invalid': dadosCliente.get('endereco.numero').errors && dadosCliente.get('endereco.numero').touched}"
+                formControlName="numero"/>
+                <div *ngIf="dadosCliente.get('endereco.numero').hasError('required') &&
+                      dadosCliente.get('endereco.numero').touched"
+                      class="invalid-feedback">
+                  Número é obrigatório.
+                </div>
+              </div>
+              <div class="form-group col-md-6">
+                <label>Complemento</label>
+                <input type="text" class="form-control" formControlName="complemento"/>
+              </div>
+              <div class="form-group col-md-6">
+                <label>Bairro</label>
+                <input type="text" class="form-control" formControlName="bairro" readonly="true"/>
+              </div>
+              <div class="form-group col-md-6">
+                <label>Cidade</label>
+                <input type="text" class="form-control" formControlName="cidade" readonly="true"/>
+              </div>
+              <div class="form-group col-md-6">
+                <label>Estado</label>
+                <input type="text" class="form-control" formControlName="estado" readonly="true">
+              </div>
+            </div>
+          </fieldset>
+        </div>
+      </div>
+    </tab>
+  </tabset>
+  <div class="row">
+    <div class="modal-footer d-flex">
+      <button class="btn btn-secondary" [routerLink]="['/cliente']">Voltar</button>
+      <button class="btn btn-primary ml-auto" [disabled]="!dadosCliente.valid" (click)="salvar()">Salvar</button>
+    </div>
+  </div>
+</form>

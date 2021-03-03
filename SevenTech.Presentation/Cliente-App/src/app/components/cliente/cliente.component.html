@@ -1,0 +1,83 @@
+<div class="d-flex">
+  <div class="form-inline mr-auto">
+    <div class="form-group mb-2">
+      <div>
+        <button class="btn btn-outline-primary mt-2" [routerLink]="['/cliente', 0, 'registrarcliente']"
+        tooltip="Novo cliente">
+          <i class="fa fa-plus-circle"></i>
+          Novo cliente
+        </button>
+      </div>
+    </div>
+  </div>
+</div>
+<table class="table table-striped">
+  <thead class="thead-dark">
+    <tr>
+      <th>Código</th>
+      <th>Nome</th>
+      <th>Data de Nascimento</th>
+      <th>Sexo</th>
+      <th>Ações</th>
+    </tr>
+  </thead>
+  <tbody *ngIf="clientes">
+    <tr *ngFor="let cliente of clientes">
+      <td>{{cliente.id}}</td>
+      <td>{{cliente.nome}}</td>
+      <td>{{cliente.dataNascimento | datetimeformat }}</td>
+      <ng-container
+        *ngIf="cliente.sexo == 0; then feminino; else masculino">
+      </ng-container>
+      <ng-template #feminino>
+        <td>Feminino</td>
+      </ng-template>
+      <ng-template #masculino>
+        <td>Masculino</td>
+      </ng-template>
+      <td>
+        <div class="btn group">
+          <button class="btn btn-sm btn-success" [routerLink]="['/cliente', cliente.id, 'registrarcliente']" tooltip="Editar">
+            <i class="fa fa-edit"></i>
+          </button>
+          <button class="btn btn-sm btn-danger" tooltip="Remover" (click)="removerCliente(cliente, confirm)">
+            <i class="fa fa-eraser"></i>
+          </button>
+        </div>
+      </td>
+    </tr>
+  </tbody>
+  <tfoot *ngIf="!clientes">
+    <tr>
+      <td colspan="7" class="text-center">
+        <h4>Nenhum cliente encontrado!</h4>
+      </td>
+    </tr>
+  </tfoot>
+</table>
+
+<div bsModal #confirm="bs-modal" class="modal fade" tabindex="-1" role="dialog" aria-labelledby="dialog-sizes-name1">
+	<div class="modal-dialog modal-sm">
+  		<div class="modal-content">
+    		<div class="modal-header">
+      			<h4 class="modal-title pull-left">
+        			Remover cliente
+      			</h4>
+      			<button type="button" class="close pull-right" (click)="confirm.hide()" aria-label="Close">
+        			<span aria-hidden="true">&times;</span>
+      			</button>
+    		</div>
+    		<div class="modal-body">
+      			<p>{{bodyRemoverCliente}}</p>
+    		</div>
+    		<div class="modal-footer btn-group d-flex">
+      			<button type="button" class="btn btn-outline-primary" (click)="confirm.hide()">
+        			Cancelar
+      			</button>
+      			<button type="button" class="btn btn-outline-danger" (click)="confirmeRemove(confirm)">
+          		Remover
+        		</button>
+    		</div>
+  		</div>
+	</div>
+</div>
